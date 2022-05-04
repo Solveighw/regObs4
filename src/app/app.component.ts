@@ -19,6 +19,7 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { NavigationError, Router, RouterEvent } from '@angular/router';
 import { removeOauthTokenFromUrl } from './modules/shared/services/logging/url-utils';
 import { DraftToRegistrationService } from './core/services/draft/draft-to-registration.service';
+import { RegobsNative } from 'src/regobs-plugin';
 
 const DEBUG_TAG = 'AppComponent';
 const ROUTER_DEBUG_TAG = 'Router';
@@ -45,8 +46,14 @@ export class AppComponent {
     private router: Router,
     private draftToRegService: DraftToRegistrationService
   ) {
+    this.testNative();
     this.swipeBackEnabled$ = this.swipeBackService.swipeBackEnabled$;
     this.initializeApp();
+  }
+
+  async testNative() {
+    const fromNative = await RegobsNative.echo({ value: 'https://offlinemap.blob.core.windows.net/metadata/packageIndex_v3.json' });
+    this.loggingService.debug('Result from native', 'NATIVE_TEST', fromNative);
   }
 
   initializeApp(): void {
