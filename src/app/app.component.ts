@@ -20,6 +20,7 @@ import { NavigationError, Router, RouterEvent } from '@angular/router';
 import { removeOauthTokenFromUrl } from './modules/shared/services/logging/url-utils';
 import { DraftToRegistrationService } from './core/services/draft/draft-to-registration.service';
 import { RegobsNative } from 'src/regobs-plugin';
+import { Directory, Encoding, Filesystem } from '@capacitor/filesystem';
 
 const DEBUG_TAG = 'AppComponent';
 const ROUTER_DEBUG_TAG = 'Router';
@@ -52,7 +53,11 @@ export class AppComponent {
   }
 
   async testNative() {
-    const fromNative = await RegobsNative.echo({ value: 'https://offlinemap.blob.core.windows.net/metadata/packageIndex_v3.json' });
+    const destinationPath = `${Directory.Data}/testmaps`;
+    const fromNative = await RegobsNative.echo({
+      downloadUrl: 'https://offlinemap.blob.core.windows.net/statens-kartverk-nov-21/statensKartverk_8-14_143_55_1.zip',
+      destinationPath: destinationPath
+    });
     this.loggingService.debug('Result from native', 'NATIVE_TEST', fromNative);
   }
 
